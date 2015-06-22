@@ -4,7 +4,7 @@ source = {
   url = "git://github.com/GUI/lua-libcidr-ffi.git",
 }
 description = {
-  summary = "libcidr bindings for Lua"
+  summary = "libcidr bindings for Lua",
   detailed = "Perform various CIDR and IP address operations to check IPv4 and IPv6 ranges.",
   homepage = "https://github.com/GUI/lua-libcidr-ffi",
   license = "MIT",
