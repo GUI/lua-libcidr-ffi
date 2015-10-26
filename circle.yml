@@ -1,10 +1,10 @@
 dependencies:
+  cache_directories:
+    - spec/tmp
   pre:
     - sudo apt-get install luarocks
   override:
     - make
 test:
-  cache_directories:
-    - spec/tmp
   override:
     - make test
