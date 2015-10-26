@@ -1,5 +1,7 @@
 # lua-libcidr-ffi
 
+[![Circle CI](https://circleci.com/gh/GUI/lua-libcidr-ffi.svg?style=svg)](https://circleci.com/gh/GUI/lua-libcidr-ffi)
+
 LuaJIT FFI bindings to [libcidr](http://www.over-yonder.net/~fullermd/projects/libcidr). Provides CIDR calculations for IPv4 and IPv6.
 
 ## Usage
