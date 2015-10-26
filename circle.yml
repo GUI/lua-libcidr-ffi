@@ -2,8 +2,11 @@ dependencies:
   cache_directories:
     - spec/tmp
   pre:
-    - sudo apt-get install luarocks
+    - sudo apt-get install luarocks luajit
     - sudo luarocks install busted
+    # Force busted to run the tests under luajit, since we required LuaJIT for
+    # the FFI features.
+    - sudo sed -i 's#/usr/bin/lua#$LUA#g' /usr/local/bin/busted
   override:
     - make
 test:
