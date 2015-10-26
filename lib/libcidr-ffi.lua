@@ -9,6 +9,8 @@ typedef struct {
 CIDR *cidr_from_str(const char *);
 char *cidr_to_str(const CIDR *, int);
 int cidr_contains(const CIDR *, const CIDR *);
+void cidr_free(CIDR *);
+void free(void *);
 ]]
 
 local cidr = ffi.load("cidr")
@@ -36,11 +38,17 @@ function _M.from_str(string)
     end
   end
 
+  result = ffi.gc(result, cidr.cidr_free)
+
   return result
 end
 
-function _M.to_str(string)
-  local result = cidr.cidr_to_str(string, 0)
+function _M.to_str(struct)
+  if type(struct) ~= "cdata" then
+    return nil, "Invalid argument (bad block or flags)"
+  end
+
+  local result = cidr.cidr_to_str(struct, 0)
   if result == nil then
     local errno = ffi.errno()
     if errno == errs.EINVAL then
@@ -52,10 +60,19 @@ function _M.to_str(string)
     end
   end
 
-  return result
+  local string = ffi.string(result)
+  ffi.C.free(result)
+
+  return string
 end
 
 function _M.contains(big, little)
+  if big == nil or little == nil then
+    return nil, "Passed NULL"
+  elseif type(big) ~= "cdata" or type(little) ~= "cdata" then
+    return nil, "Invalid argument"
+  end
+
   local result = cidr.cidr_contains(big, little)
   if result == 0 then
     return true
