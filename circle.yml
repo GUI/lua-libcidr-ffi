@@ -3,10 +3,10 @@ dependencies:
     - spec/tmp
   pre:
     - sudo apt-get install luarocks luajit
-    - sudo luarocks install busted
-    # Force busted to run the tests under luajit, since we required LuaJIT for
+    # Force busted to run the tests under luajit, since we require LuaJIT for
     # the FFI features.
-    - sudo sed -i 's#/usr/bin/lua#$LUA#g' /usr/local/bin/busted
+    - sudo update-alternatives --install /usr/bin/lua lua-interpreter /usr/bin/luajit* 200
+    - sudo luarocks install busted
   override:
     - make
 test:
