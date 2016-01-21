@@ -41,3 +41,7 @@ bool = cidr.contains(big, small)
 ```
 
 This function is passed two CIDR structures describing a pair of netblocks. It then determines if the latter is wholly contained within the former. In case of failures, returns `nil` and a string describing the error.
+
+## Alternatives
+
+- [lua-resty-iputils](https://github.com/hamishforbes/lua-resty-iputils): A pure Lua library for CIDR comparisons in OpenResty. Provides a nice higher-level API with built-in caching. Currently lacks IPv6 support.
