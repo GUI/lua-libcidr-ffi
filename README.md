@@ -4,6 +4,14 @@
 
 LuaJIT FFI bindings to [libcidr](http://www.over-yonder.net/~fullermd/projects/libcidr). Provides CIDR calculations for IPv4 and IPv6.
 
+## Installation
+
+The [libcidr](http://www.over-yonder.net/~fullermd/projects/libcidr) library must first be installed on your system. Then you can install lua-libcidr-ffi through [LuaRocks](https://luarocks.org):
+
+```sh
+$ luarocks install libcidr-ffi
+```
+
 ## Usage
 
 ```lua
