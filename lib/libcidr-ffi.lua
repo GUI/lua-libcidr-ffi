@@ -23,7 +23,9 @@ local errs = {
   EPROTO = 71,
 }
 
-local _M = {}
+local _M = {
+  _VERSION = "0.1.1"
+}
 
 function _M.from_str(string)
   local result = cidr.cidr_from_str(string)
