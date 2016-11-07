@@ -1,5 +1,10 @@
 # lua-libcidr-ffi Change Log
 
+## 0.1.3 - 2016-11-07
+
+### Fixed
+- Another re-upload to fix initial OPM upload issue (no code changes).
+
 ## 0.1.2 - 2016-11-06
 
 ### Fixed

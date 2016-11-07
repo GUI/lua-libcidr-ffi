@@ -24,7 +24,7 @@ local errs = {
 }
 
 local _M = {
-  _VERSION = "0.1.2"
+  _VERSION = "0.1.3"
 }
 
 function _M.from_str(string)

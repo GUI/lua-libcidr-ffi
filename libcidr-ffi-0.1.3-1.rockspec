@@ -1,8 +1,8 @@
 package = "libcidr-ffi"
-version = "0.1.2-1"
+version = "0.1.3-1"
 source = {
   url = "git://github.com/GUI/lua-libcidr-ffi.git",
-  tag = "v0.1.2"
+  tag = "v0.1.3"
 }
 description = {
   summary = "libcidr bindings for Lua",
