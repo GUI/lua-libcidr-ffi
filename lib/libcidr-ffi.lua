@@ -15,6 +15,8 @@ void free(void *);
 
 local cidr = ffi.load("cidr")
 
+local lshift = bit.lshift
+
 local errs = {
   EINVAL = 22,
   ENOENT = 2,
@@ -25,6 +27,21 @@ local errs = {
 
 local _M = {
   _VERSION = "0.1.3"
+}
+
+_M.flags = {
+  NOFLAGS     = 0,
+  NOCOMPACT   = 1, -- Don't do :: compaction
+  VERBOSE     = lshift(1, 1), -- Don't minimize leading zeros
+  USEV6       = lshift(1, 2), -- Use v6 form for v4 addresses
+  USEV4COMPAT = lshift(1, 3), -- Use v4-compat rather than v4-mapped
+  NETMASK     = lshift(1, 4), -- Show netmask instead of pflen
+  ONLYADDR    = lshift(1, 5), -- Only show the address
+  ONLYPFLEN   = lshift(1, 6), -- Only show the pf/mask
+  WILDCARD    = lshift(1, 7), -- Show wildcard-mask instead of netmask
+  FORCEV6     = lshift(1, 8), -- Force treating as v6 address
+  FORCEV4     = lshift(1, 9), -- Force treating as v4 address
+  REVERSE     = lshift(1, 10), -- Return a DNS PTR name
 }
 
 function _M.from_str(string)
@@ -45,12 +62,16 @@ function _M.from_str(string)
   return result
 end
 
-function _M.to_str(struct)
+function _M.to_str(struct, flags)
   if type(struct) ~= "cdata" then
     return nil, "Invalid argument (bad block or flags)"
   end
 
-  local result = cidr.cidr_to_str(struct, 0)
+  if type(flags) ~= "number" then
+    flags = 0
+  end
+
+  local result = cidr.cidr_to_str(struct, flags)
   if result == nil then
     local errno = ffi.errno()
     if errno == errs.EINVAL then

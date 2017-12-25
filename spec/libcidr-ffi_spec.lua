@@ -83,6 +83,38 @@ describe("libcidr-ffi", function()
       assert.are.equal(result, nil)
       assert.are.equal(err, "Invalid argument (bad block or flags)")
     end)
+
+    it("returns VERBOSE - Don't minimize leading zeros", function()
+      local result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), cidr.flags.VERBOSE )
+      assert.are.equal(result, "2001:0db8::0002:0001/128")
+    end)
+
+    it("returns VERBOSE and NOCOMPACT - Don't do :: compaction", function()
+      local result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), bit.bor(cidr.flags.NOCOMPACT, cidr.flags.VERBOSE) )
+      assert.are.equal(result, "2001:0db8:0000:0000:0000:0000:0002:0001/128")
+    end)
+
+    it("returns only the address without netmask", function()
+      local result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), cidr.flags.ONLYADDR )
+      assert.are.equal(result, "2001:db8::2:1")
+    end)
+
+    it("returns an error with invalid flags", function()
+      local result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), -1 )
+      assert.are.equal(result, nil)
+      assert.are.equal(err, "Invalid argument (bad block or flags)")
+    end)
+
+    it("returns flags = 0 (no flags) as default when unsupported type is sent", function()
+      local result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), {} )
+      assert.are.equal(result, "2001:db8::2:1/128")
+
+      result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), "a string" )
+      assert.are.equal(result, "2001:db8::2:1/128")
+
+      result, err = cidr.to_str( cidr.from_str("2001:db8::2:1"), function() end )
+      assert.are.equal(result, "2001:db8::2:1/128")
+    end)
   end)
 
   describe("contains", function()
