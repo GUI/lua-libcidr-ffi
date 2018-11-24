@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: openresty/openresty:1.13.6.2-2-centos
+    steps:
+      - checkout
+      - run: yum -y install gcc make
+      - run: luarocks install busted
+      - run: make
+      - run: make test
