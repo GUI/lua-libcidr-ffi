@@ -53,3 +53,11 @@ This function is passed two CIDR structures describing a pair of netblocks. It t
 ## Alternatives
 
 - [lua-resty-iputils](https://github.com/hamishforbes/lua-resty-iputils): A pure Lua library for CIDR comparisons in OpenResty. Provides a nice higher-level API with built-in caching. Currently lacks IPv6 support.
+
+## Development
+
+After checking out the repo, Docker can be used to run the test suite:
+
+```sh
+docker-compose run --rm app make test
+```

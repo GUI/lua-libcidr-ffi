@@ -6,6 +6,5 @@ jobs:
     steps:
       - checkout
       - run: yum -y install gcc make
-      - run: luarocks install busted
-      - run: make
+      - run: make install-test-deps
       - run: make test
