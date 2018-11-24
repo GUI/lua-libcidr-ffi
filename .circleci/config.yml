@@ -1,10 +1,27 @@
 version: 2
 jobs:
-  build:
+  openresty-1.13-libcidr-source:
     docker:
       - image: openresty/openresty:1.13.6.2-2-centos
+    environment:
+      LD_LIBRARY_PATH: /usr/local/lib
     steps:
       - checkout
       - run: yum -y install gcc make
+      - run: make install-deps-source
       - run: make install-test-deps
       - run: make test
+  openresty-1.13-libcidr-package:
+    docker:
+      - image: openresty/openresty:1.13.6.2-2-bionic
+    steps:
+      - checkout
+      - run: make install-deps-apt
+      - run: make install-test-deps
+      - run: make test
+workflows:
+  version: 2
+  build:
+    jobs:
+      - openresty-1.13-libcidr-source
+      - openresty-1.13-libcidr-package
