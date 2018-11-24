@@ -65,10 +65,52 @@ Takes in a netblock description as a human-readable string, and creates a CIDR s
 ### `to_str`
 
 ```lua
-string, err = cidr.to_str(struct)
+string, err = cidr.to_str(struct[, flags])
 ```
 
 Takes in a CIDR structure, and generates up a human-readable string describing the netblock. In case of failures, returns `nil` and a string describing the error.
+
+#### Flags
+
+An optional second argument accepts flags that can be used to control the string output format. Constants for each flag are available under `cidr.flags`. Multiple flags can be combined as a bitmask. The available flags are:
+
+- `NOFLAGS`: A stand-in for when you just want the default output
+- `NOCOMPACT`: Don't do ::-style IPv6 compaction
+- `VERBOSE`: Show leading 0's in octets [v6 only]
+- `USEV6`: Use IPv4-mapped address form for IPv4 addresses (::ffff:a.b.c.d)
+- `USEV4COMPAT`: Use IPv4-compat form (::a.b.c.d) instead of IPv4-mapped form (only meaningful in combination with CIDR_USEV6)
+- `NETMASK`: Return a netmask in standard form after the slash, instead of the prefix length. Note that the form of the netmask can thus be altered by the various flags that alter how the address is displayed.
+- `ONLYADDR`: Show only the address, without the prefix/netmask
+- `ONLYPFLEN`: Show only the prefix length (or netmask, when combined with CIDR_NETMASK), without the address.
+- `WILDCARD`: Show a Cisco-style wildcard mask instead of the netmask (only meaningful in combination with CIDR_NETMASK)
+- `FORCEV6`: Forces treating the CIDR as an IPv6 address, no matter what it really is. This doesn't do any conversion or translation; just treats the raw data as if it were IPv6.
+- `FORCEV4`: Forces treating the CIDR as an IPv4 address, no matter what it really is. This doesn't do any conversion or translation; just treats the raw data as if it were IPv4.
+- `REVERSE`: Generates a .in-addr.arpa or .ip6.arpa-style PTR record name for the given block. Note that this always treats it solely as an address; the netmask is ignored. See some notes in cidr_from_str() for details of the asymmetric treatment of this form of address representation relating to the netmask.
+
+Examples:
+
+```lua
+local cidr = require "libcidr-ffi"
+local bit = require "bit"
+
+cidr.to_str(cidr.from_str("127.0.0.1"))
+-- "127.0.0.1/32"
+
+cidr.to_str(cidr.from_str("127.0.0.1"), cidr.flags.ONLYADDR)
+-- "127.0.0.1"
+
+cidr.to_str(cidr.from_str("127.0.0.1"), cidr.flags.USEV6)
+-- "::ffff:127.0.0.1/128"
+
+cidr.to_str(cidr.from_str("127.0.0.1"), bit.bor(cidr.flags.ONLYADDR, cidr.flags.USEV6))
+-- "::ffff:127.0.0.1"
+
+cidr.to_str(cidr.from_str("2001:db8::2:1"))
+-- "2001:db8::2:1/128"
+
+cidr.to_str(cidr.from_str("2001:db8::2:1"), cidr.flags.VERBOSE)
+-- "2001:0db8::0002:0001/128"
+```
 
 ### `contains`
 
