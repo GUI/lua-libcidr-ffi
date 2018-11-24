@@ -151,3 +151,14 @@ After checking out the repo, Docker can be used to run the test suite:
 ```sh
 docker-compose run --rm app make test
 ```
+
+### Release Process
+
+To release a new version to LuaRocks and OPM:
+
+- Ensure `CHANGELOG.md` is up to date.
+- Update the `_VERSION` in `lib/libcidr-ffi.lua`.
+- Update the `version` in `dist.ini`.
+- Move the rockspec file to the new version number (`git mv libcidr-ffi-X.X.X-1.rockspec libcidr-ffi-X.X.X-1.rockspec`), and update the `version` and `tag` variables in the rockspec file.
+- Commit and tag the release (`git tag -a vX.X.X -m "Tagging vX.X.X" && git push origin vX.X.X`).
+- Run `make release VERSION=X.X.X`.

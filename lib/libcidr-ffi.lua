@@ -26,7 +26,7 @@ local errs = {
 }
 
 local _M = {
-  _VERSION = "0.1.3"
+  _VERSION = "1.0.0"
 }
 
 _M.flags = {
