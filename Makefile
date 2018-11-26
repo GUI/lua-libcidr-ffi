@@ -1,4 +1,4 @@
-.PHONY: all lint test install-test-deps install-deps-apt install-deps-source
+.PHONY: all lint test install-test-deps install-deps-apt install-deps-source-yum install-deps-source release
 
 all:
 
@@ -7,7 +7,7 @@ lint:
 
 test: lint
 	luarocks make --local libcidr-ffi-git-1.rockspec
-	busted spec
+	busted spec --shuffle
 
 install-test-deps:
 	luarocks install busted 2.0.rc13-0
@@ -16,6 +16,9 @@ install-test-deps:
 install-deps-apt:
 	apt-get update
 	apt-get -y install libcidr-dev
+
+install-deps-source-yum:
+	yum -y install gcc
 
 install-deps-source:
 	$(eval tmpdir := $(shell mktemp -d))

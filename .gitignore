@@ -1,3 +1,4 @@
 # Ignore LuaRocks build artifacts
 /libcidr-ffi-*
+/lua-libcidr-ffi-*
 !/libcidr-ffi-*.rockspec

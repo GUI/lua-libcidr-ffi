@@ -7,7 +7,8 @@ jobs:
       LD_LIBRARY_PATH: /usr/local/lib
     steps:
       - checkout
-      - run: yum -y install gcc make
+      - run: yum -y install make
+      - run: make install-deps-source-yum
       - run: make install-deps-source
       - run: make install-test-deps
       - run: make test
